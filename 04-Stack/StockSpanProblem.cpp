@@ -84,5 +84,9 @@ int *linear_span(int *price, int len) {
         else {
             span[i] = i - stack.top();
         }
+
+        stack.push(i);
     }
+
+    return span;
 }
