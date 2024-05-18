@@ -1,5 +1,3 @@
-using namespace std;
-
 class PositionList;
 template <typename T>
 class Position {
@@ -28,7 +26,7 @@ public:
     bool isExternal() const {
         return children.empty();
     }
-}
+};
 
 template <typename T>
 class Tree {
@@ -57,11 +55,33 @@ public:
     PositionList positions() {
         return _positions;
     }
-}
+};
 
 int depth(const Tree<int> &t, const Position<int> &p) {
     if (p.isRoot()) 
         return 0;
     else
         return 1 + depth(t, p.parent());
+}
+
+int height1(const Tree<int> &t) {
+    int h = 0;
+    PositionList nodes = t.positions();
+    for (auto q = nodes.begin(); q != nodes.end(); ++q) {
+        if (q->isExternal()) {
+            h = max(h, depth(t, q));
+        }
+    }
+    return h;
+}
+
+int height2(const Tree<int> &t, const Position<int> &p) {
+    if (p.isExternal()) 
+        return 0; 
+    
+    int h = 0;
+    PositionList ch = p.children();
+    for (auto q = ch.begin(); q != ch.end(); ++q) 
+        h = max(h, height2(t, *q));
+    return 1 + h;
 }
